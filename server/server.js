@@ -13,12 +13,14 @@ app.use(cors())
 app.use('/db', routers)
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '../public/index.html'))
-})
+  res.sendFile(path.resolve(__dirname, '../public/index.html'));
+});
 // app.get('/signup', (req,res) => {
 //     res.render('/client/signup', {error: null})
 // })
 
 app.listen(PORT, () => {
-    console.log("server is listening on port " + PORT);
-})
+  console.log("server is listening on port " + PORT);
+});
+
+module.exports = app;
