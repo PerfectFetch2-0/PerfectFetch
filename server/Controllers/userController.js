@@ -3,7 +3,7 @@
 //word wrap is your friend (option + Z)
 
 //requiring in pool from our datbase file
-const pool = require('./database')
+const pool = require('../database')
 //setting our controller object
 const userController = {};
 //we use bcrypt here for hashing passwords. good docs on their npm page https://www.npmjs.com/package/bcrypt

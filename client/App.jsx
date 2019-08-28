@@ -20,7 +20,7 @@ class App extends Component {
       event.preventDefault();
       console.log("obj: ", obj)
       // on webpack proxy server bridges port 3000 with port 8080 request
-      fetch('http://localhost:3000/db/login', {
+      fetch('http://localhost:3000/user/login', {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
