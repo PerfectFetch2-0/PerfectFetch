@@ -4,15 +4,12 @@ const express = require("express");
 const path = require("path");
 const locationRouter = require("./Routers/locationControllerRouter");
 const userRouter = require("./Routers/userControllerRouter");
-//const routers = require('./routers')
 const app = express();
-const PORT = 3050;
+const PORT = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-
-//app.use('/db', routers)
 
 app.get("/user", userRouter);
 app.get("/location", locationRouter);
