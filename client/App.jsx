@@ -20,7 +20,7 @@ class App extends Component {
       event.preventDefault();
       console.log("obj: ", obj)
       // on webpack proxy server bridges port 3000 with port 8080 request
-      fetch('http://localhost:3000/db/login', {
+      fetch('http://localhost:3000/user/login', {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
@@ -39,7 +39,7 @@ class App extends Component {
       console.log("signupObj: ", obj)
       event.preventDefault();
       console.log("obj: ", obj)
-      fetch('http://localhost:3000/db/signup', {
+      fetch('http://localhost:3000/user/signup', {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
@@ -63,7 +63,7 @@ class App extends Component {
           {/* // switch component will render components according with their path */}
           <Switch>
             <Route exact path="/" component={()=><Login  handleLoginSubmit={this.handleLoginSubmit} /> } />
-            <Route exact path="/Signup" component={()=><Signup handleSignupSubmit={this.handleSignupSubmit} />}/>
+            <Route exact path="/users/signup" component={()=><Signup handleSignupSubmit={this.handleSignupSubmit} />}/>
           </Switch>
         </main>
       </div>
