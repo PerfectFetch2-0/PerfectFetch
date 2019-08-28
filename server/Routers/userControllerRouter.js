@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const locationController = require('../Controllers/locationController');
 const userController = require('../Controllers/userController');
 
 //post request that stores users sign up info in our database
