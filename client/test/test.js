@@ -10,6 +10,6 @@ describe('Login component', () => {
     expect(wrapper.find("input[type='text']")).toHaveLength(1);
     expect(wrapper.find("input[type='password']")).toHaveLength(1);
   });
-  it('Should render one')
+  it('Should render one', () )
 
 });
