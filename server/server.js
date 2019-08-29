@@ -9,7 +9,6 @@ const store = require("./Model/sessionStore");
 
 const locationRouter = require("./Routers/locationRouter");
 const userRouter = require("./Routers/userRouter");
-const sessionController = require("./Controllers/sessionController");
 
 const app = express();
 
