@@ -28,7 +28,7 @@ userController.createUser = (req, res, next) => {
 
   // * Error Check Passed: Create a new user.
   const hash = bcrypt.hashSync(password, 10);
-  const addUser = 'INSERT INTO users (username, email, password ) VALUES($1, $2, $3) RETURNING *';
+  const addUser = 'INSERT INTO users (username, email, password) VALUES($1, $2, $3) RETURNING *';
   const newUserData = [username, email, hash];
   pool.query(addUser, newUserData, (err, data) => {
     if (err) {
@@ -81,8 +81,24 @@ userController.loginUser = (req, res, next) => {
       console.log('User has successfully verified!')
       next();
     })
-
   });
+  }
+
+  // Controller responsible for retreving user ID from the users table.
+  userController.grabIDforMeetup = () => {
+    const { email } = req.body;
+    const userQuery = 'SELECT user_id FROM users WHERE email = $1'
+    pool.query(userQuery, [email], (error, result) => {
+      // ! Error Check
+      if (error) {
+        console.log(`An error has occured while locating the user ID. Error: ${error}`);
+        res.status(400).send('An error has occured.');
+      }
+      const { row } = result;
+      res.locals.ID = row[0][user_id];
+      res.locals.body = req.body;
+      next();
+    })
   }
 
 module.exports = userController

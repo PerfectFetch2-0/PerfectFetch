@@ -9,7 +9,6 @@ const store = require("./Model/sessionStore");
 
 const locationRouter = require("./Routers/locationRouter");
 const userRouter = require("./Routers/userRouter");
-const sessionController = require("./Controllers/sessionController");
 
 const app = express();
 
@@ -30,12 +29,12 @@ app.use(
 app.use('/user', userRouter);
 app.use('/location', locationRouter);
 
-app.get('/', sessionController.test, (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log("server is listening on port " + PORT);
+  console.log("Server is listening on port " + PORT);
 });
 
 module.exports = app;
