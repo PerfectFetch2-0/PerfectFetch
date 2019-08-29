@@ -1,12 +1,13 @@
-const pool = require('../database')
+const pool = require('../Model/database')
 const userController = {};
 const bcrypt = require('bcrypt')
 
 // Controller responsible for adding new users to the database.
 userController.createUser = (req, res, next) => {
-  const { name, email, password } = req.body;
+  console.log(req.body)
+  const { username, email, password } = req.body;
   // ! Error Check: Incomplete sign up form.
-  if (!name || !email || !password) return res.status(400).send("Sign up form is incomplete.");
+  if (!username || !email || !password) return res.status(400).send("Sign up form is incomplete.");
 
   const newUserQuery = 'SELECT email FROM users WHERE email = $1';
   pool.query(newUserQuery, [email], (err, result) => {
@@ -27,23 +28,24 @@ userController.createUser = (req, res, next) => {
   // * Error Check Passed: Create a new user.
   const hash = bcrypt.hashSync(password, 10);
   const addUser = 'INSERT INTO users (username, email, password ) VALUES($1, $2, $3) RETURNING *';
-  const newUserData = [name, email, hash];
+  const newUserData = [username, email, hash];
   pool.query(addUser, newUserData, (err, data) => {
     if (err) {
       console.error(`An error occured while encrypting a new user password. Error: ${err}`);
       res.status(500).send('An error has occured.');
-    }
-    return res.status(200).send("User has been successfully added to the database!");
+    } 
+    res.locals.username = username;
+    res.locals.email = email;
+    console.log("User has been successfully added to the database.")
+    // return res.status(200).send("User has been successfully added to the database!");
+    next();
   });    
-  next();
 }
 
 // Controller responsible for checking if credentials provided on the log in for are valid.
 userController.loginUser = (req, res, next) => {
   const { email, password } = req.body
-  console.log('BODY', req.body)
-  console.log('PASSWORD', password)
-  let userInfo;
+
   // ! Error Check: Log in form is incomplete.
   if (!email || !password) return res.status(400).send("Log in form is incomplete.");
 
@@ -69,15 +71,17 @@ userController.loginUser = (req, res, next) => {
         console.log(`An error occured while checking if user password matched the hashed password. Error: ${err}`)
         return res.status(400).send('An error occured while checking your credentials.')
       }
-      if (result === true) {
-        console.log('User has successfully signed in!')
-        return res.status(200).send({isLoggedIn: true})
+      if (!result) {
+        console.log('Invalid Password submmitted by user!')
+        return res.status(400).send('Invalid password!')
       }
-      console.log('Invalid Password submmitted by user!')
-      return res.status(400).send('Invalid password!')
+      res.locals.username = rows[0].username;
+      res.locals.email = email;
+      console.log('User has successfully verified!')
+      next();
     })
+
   });
-  next();
   }
 
 module.exports = userController
