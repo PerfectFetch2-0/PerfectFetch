@@ -1,4 +1,4 @@
-const pool = require('../database')
+const pool = require('../Model/database')
 const locationController = {}
 
 //our intention with the addInfo method was to add a users email, message, and location to the map dynamically when they clicked a point on the map. This would be able to be viewed by other users who signed in. Something that could be good to implement here would be to have some form of check to see if a message already exists associated with the user, perhaps to prevent duplicate posts by the one user? While we check here if a user has implemented a message, we are not checking if the message is unique.
