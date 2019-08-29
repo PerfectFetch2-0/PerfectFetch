@@ -16,13 +16,12 @@ class App extends Component {
         this.handleSignupSubmit = this.handleSignupSubmit.bind(this)
     }
     // obj has login information
-    handleLoginSubmit(obj, event) {
+    handleLoginSubmit(state, event) {
       event.preventDefault();
-      console.log("obj: ", obj)
       // on webpack proxy server bridges port 3000 with port 8080 request
       fetch('http://localhost:3000/db/login', {
         method: 'POST',
-        body: JSON.stringify(obj),
+        body: JSON.stringify(state),
         headers: {
           'Content-Type': 'application/json'
         }})
@@ -35,13 +34,11 @@ class App extends Component {
         })
     }
     // obj has signup information
-    handleSignupSubmit(obj, event) {
-      console.log("signupObj: ", obj)
+    handleSignupSubmit(state, event) {
       event.preventDefault();
-      console.log("obj: ", obj)
       fetch('http://localhost:3000/db/signup', {
         method: 'POST',
-        body: JSON.stringify(obj),
+        body: JSON.stringify(state),
         headers: {
           'Content-Type': 'application/json'
         }})

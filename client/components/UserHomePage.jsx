@@ -22,17 +22,12 @@ class UserHomePage extends Component {
   }
 
 
-  componentWillMount(){
-    // this fetch request DOES NOT WORK. It is not properly connected to the database. This fetch request may need to live elsewhere (perhaps in the constructor, above?). 
-
-    // fetch request to get user location and messages, in order to populate map on initial login
+  componentDidMount(){
   fetch('http://localhost:3000/db/getAllInfo')
   .then((res)=>res.json)
   .then((myObj)=>{console.log(myObj);})
   .catch('there was an error with your fetch request');
   }
-
-
   getUserLocation (userInput) {
   //navigator.geolocation.getCurrentPosition is a native JS API call. It is asynchronous, which is why it takes some time for a new marker to display on the map.
       navigator.geolocation.getCurrentPosition((position)=>{
@@ -42,8 +37,6 @@ class UserHomePage extends Component {
           lng: position.coords.longitude
         };
         this.updateUserInfoInsideState(userInput, currentPosition);
-
-
       });
     }
     // updateUserInfoInsideState is a helper method that updates state AFTER the user location and message have been retrieved.
@@ -79,7 +72,7 @@ class UserHomePage extends Component {
         <div className={'mapContainer'}>
             <div className='googleMap'>
                 <WrappedMapWithMarker 
-                googleMapURL={'https://maps.googleapis.com/maps/api/js?key=AIzaSyDfGA9uSqnTuRHc7V6c0tlEsyZaEBZKFeA&v=3.exp&libraries=geometry,drawing,places'}
+                googleMapURL={'https://maps.googleapis.com/maps/api/js?key=AIzaSyCvMmy5ZGmRRxenD1J7DhZWa9oLGfxuBO4&libraries=geometry,drawing,places'}
                 loadingElement={<div style={ {height: '100%'} }/> }
                 containerElement={<div style={ {height: '100%'} }/> }
                 mapElement={<div style={ {height: '100%'} }/> }
@@ -88,7 +81,7 @@ class UserHomePage extends Component {
                 />
             </div>
         </div>
-        <div className={'addFindContainer'}>
+        <div >
           <AddButton 
           getUserLocation={this.getUserLocation}
           />
