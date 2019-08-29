@@ -1,30 +1,31 @@
 const pool = require('../Model/database')
 const locationController = {}
 
-//our intention with the addInfo method was to add a users email, message, and location to the map dynamically when they clicked a point on the map. This would be able to be viewed by other users who signed in. Something that could be good to implement here would be to have some form of check to see if a message already exists associated with the user, perhaps to prevent duplicate posts by the one user? While we check here if a user has implemented a message, we are not checking if the message is unique.
-locationController.addInfo = (req, res, next) => {
-  const { email, message, latitude, longitude } = req.body
-  //console.log("req.body: ", req.body)
-  if (!email || !message) {
-    return res.status(400).send("Please fill in your information.")
-  } else {
-    //we want to add the values below into our locations table
-    const userQuery = 'INSERT INTO locations (message, latitude, longitude, email) VALUES($1, $2, $3, $4) RETURNING *'
-    const userValues = [message, latitude, longitude, email]
-    //connecting to database and inserting our query into corresponding columns
-    pool.query(userQuery, userValues, (err, data) => {
-      //if there's an error, send an error
-      if (err) res.json("error adding info", err)
-      else {
-        //logic to update the map should go here. THIS LOGIC CURRENT DOES NOT EXIST.
-        console.log('data added: ', data)
-      }
-    })
-  }
-  next()
+// Controller responsible for adding messageID to response body.
+locationController.grabMessageID
+
+// Controller responsible for adding meetup events to the database.
+locationController.addEvent = () => {
+  const userID = res.locals.userID;
+  const { email, message, latitude, longitude } = req.locals.body;   
+  const addMeetup = 'INSERT INTO meetup(user_id, latitude, longitude, message) VALUES ($1, $2, $3, $4)'
+  const eventData = [userID, latitude, longitude, message];
+  pool.query(addMeetup, eventData, (error, result) => {
+    // ! Error Check
+    if (error) {
+      console.log(`An error has occured while adding the event to the meetup database. Error: ${error}`);
+      res.status(400).send('An error has occured.');
+    }
+    console.log('Meetup Event has been successfully added to the database!');
+    next();
+  })
 }
 
+// Controller responsible for removing meetup events to the database.
+locationController.deleteEvent = () => {
 
+
+}
 //our intention with this getAllInfo method, was to send back info to the front end from the locations table. 
 locationController.getAllInfo = (req, res, next) => {
   const joinTables = 'SELECT users.name, locations.latitude, locations.longitude, locations.message FROM users INNER JOIN locations ON users.email = locations.email';
