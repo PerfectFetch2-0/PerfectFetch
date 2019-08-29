@@ -4,13 +4,6 @@ const path = require('path');
 const app = require('../server');
 const pool = require('../database');
 
-// let server;
-// const port = 3000;
-
-
-// afterEach((done) => {
-//   server.close(done);
-// });
 
 describe('General', () => {
   it('Should return a 200 response code', (done) => {
