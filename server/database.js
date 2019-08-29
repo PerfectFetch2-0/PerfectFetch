@@ -1,19 +1,19 @@
 require('dotenv').config()
 
-// client runs one query, then closes the connection. this process can take time! with lots of request, increases the latency of your code
-// with pool, your connection is PERSISTENT. your connection with the database and the server is always open. 
+// Pool is used to manage database connections becase it capable of maintiaining a persistent connection betwee the server and the database.
 const { Pool, Client } = require('pg');
-// the connection string below is how we are connection to our database
+
+// Set up placeholder for the database URL string
 let connectionString;
 
 if (process.env.NODE_ENV === 'test') {
-  connectionString = 'localhost';
+  connectionString = process.env.testurl;
 } else {
   connectionString = process.env.url;
 }
 
 const pool = new Pool({
-    connectionString: connectionString
-})
+  connectionString,
+});
 
 module.exports = pool;
