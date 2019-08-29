@@ -41,7 +41,7 @@ class Login extends Component {
           <input type="text" name="email" onChange={(event) => {this.handleEmailChange(event)}} placeholder="Email" />
           <input type="password" name="password" onChange={(event) => {this.handlePasswordChange(event)}}  placeholder="Password" />
           <button type="submit">Go!</button>
-          <br /><br />To register go to <Link to={`/Signup`}>Signup page</Link>
+          <br /><br />To register go to <Link to={`/users/signup`}>Signup page</Link>
         </form>
       </div>
       </div>

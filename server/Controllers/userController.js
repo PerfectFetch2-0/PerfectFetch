@@ -1,0 +1,104 @@
+const bcrypt = require('bcrypt');
+const pool = require('../Model/database')
+const userController = {};
+
+
+// Controller responsible for adding new users to the database.
+userController.createUser = (req, res, next) => {
+  console.log(req.body)
+  const { username, email, password } = req.body;
+  // ! Error Check: Incomplete sign up form.
+  if (!username || !email || !password) return res.status(400).send("Sign up form is incomplete.");
+
+  const newUserQuery = 'SELECT email FROM users WHERE email = $1';
+  pool.query(newUserQuery, [email], (err, result) => {
+    const { rows } = result;
+    // ! Error Check: Failed query.
+    if (err) {
+      console.error(`Error occured while determining is a new user had a unique email. Error: ${err}`);
+      return res.status(400).send('An error has occured.')}
+
+    // ! Error Check: Emails must be unique to each user.
+    if (rows.length !== 0) {
+      console.error('User was not created because email is already in use.');
+      return res.status(400).send("This email is already in use.");
+    } 
+    return;
+  });
+
+  // * Error Check Passed: Create a new user.
+  const hash = bcrypt.hashSync(password, 10);
+  const addUser = 'INSERT INTO users (username, email, password) VALUES($1, $2, $3) RETURNING *';
+  const newUserData = [username, email, hash];
+  pool.query(addUser, newUserData, (err, data) => {
+    if (err) {
+      console.error(`An error occured while encrypting a new user password. Error: ${err}`);
+      res.status(500).send('An error has occured.');
+    } 
+    res.locals.username = username;
+    res.locals.email = email;
+    console.log("User has been successfully added to the database.")
+    // return res.status(200).send("User has been successfully added to the database!");
+    next();
+  });    
+}
+
+// Controller responsible for checking if credentials provided on the log in for are valid.
+userController.loginUser = (req, res, next) => {
+  const { email, password } = req.body
+
+  // ! Error Check: Log in form is incomplete.
+  if (!email || !password) return res.status(400).send("Log in form is incomplete.");
+
+  const userQuery = 'SELECT email, password FROM users WHERE email = $1';
+  pool.query(userQuery, [email], (err, data) => {
+    console.log('INSIDE login query')
+    const {rows} = data;
+    console.log('ROWS', rows)
+    // ! Error Check: Failed query.
+    if (err) {
+      console.error(`Error occured while determining is a new user had a unique email. Error: ${err}`);
+      return res.status(400).send('An error has occured.')}
+  
+    // ! Error Check: Email could not be found in the database.
+    if (rows.length === 0) {
+      console.log('Login Failed. User could not be found.')
+      return res.status(400).send("This email provided could not be found.");
+    }
+    
+    // * Error Checks Passed: Verify user credentials
+    bcrypt.compare(password, rows[0].password, (err, result) => {
+      if (err) {
+        console.log(`An error occured while checking if user password matched the hashed password. Error: ${err}`)
+        return res.status(400).send('An error occured while checking your credentials.')
+      }
+      if (!result) {
+        console.log('Invalid Password submmitted by user!')
+        return res.status(400).send('Invalid password!')
+      }
+      res.locals.username = rows[0].username;
+      res.locals.email = email;
+      console.log('User has successfully verified!')
+      next();
+    })
+  });
+  }
+
+  // Controller responsible for retreving user ID from the users table.
+  userController.grabIDforMeetup = () => {
+    const { email } = req.body;
+    const userQuery = 'SELECT user_id FROM users WHERE email = $1'
+    pool.query(userQuery, [email], (error, result) => {
+      // ! Error Check
+      if (error) {
+        console.log(`An error has occured while locating the user ID. Error: ${error}`);
+        res.status(400).send('An error has occured.');
+      }
+      const { row } = result;
+      res.locals.ID = row[0][user_id];
+      res.locals.body = req.body;
+      next();
+    })
+  }
+
+module.exports = userController

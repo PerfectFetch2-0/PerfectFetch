@@ -1,24 +1,40 @@
-const express = require('express')
-const app = express();
-const bodyParser = require('body-parser')
-const routers = require('./routers')
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const path = require("path");
 const PORT = 3000;
-const cors = require('cors')
-const path = require('path')
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
-app.use(cors())
+const session = require("express-session");
+const store = require("./Model/sessionStore");
 
-app.use('/db', routers)
+const locationRouter = require("./Routers/locationRouter");
+const userRouter = require("./Routers/userRouter");
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors());
+app.use(
+  session({
+    store: store,
+    secret: process.env.FOO_COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false
+    }
+  })
+);
+
+app.use('/user', userRouter);
+app.use('/location', locationRouter);
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '../public/index.html'))
-})
-// app.get('/signup', (req,res) => {
-//     res.render('/client/signup', {error: null})
-// })
+  res.sendFile(path.resolve(__dirname, '../public/index.html'));
+});
 
 app.listen(PORT, () => {
-    console.log("server is listening on port " + PORT);
-})
+  console.log("Server is listening on port " + PORT);
+});
+
+module.exports = app;
