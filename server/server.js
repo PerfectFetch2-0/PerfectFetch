@@ -30,10 +30,10 @@ app.use(
 app.use("/user", userRouter);
 app.use("/location", locationRouter);
 
-app.get("/", sessionController.test, (req, res) => {
+app.get("/",  (req, res) => {
   res.sendFile(path.join(__dirname + "../public/index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log("server is listening on port " + PORT);
+  console.log("Server is listening on port " + PORT);
 });
