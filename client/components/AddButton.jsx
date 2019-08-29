@@ -13,15 +13,15 @@ class AddButton extends Component {
     // this is how the user input (i.e. the message they want to say about their project, which displays in the InfoWindow) is passed up and saved into the state object
     let userInfo = '';
     return(
-      <div>
-          <input className={'addButtonInput'} type="text" name="projectInfo" placeholder={"What are you working on?"} onKeyUp={
+      <div className='addFindContainer'>
+          <input className={'addButtonInputMap'} type="text" name="projectInfo" placeholder={"What are you working on?"} onKeyUp={
             (e)=>{
               userInfo = e.target.value;
               console.log(userInfo); 
               console.log(e.target.value);
             }
-            } />
-          <button className={'addButtonInput'} onClick={()=>{
+            } /><br />
+          <button className={'addButtonInputMapButton'} onClick={()=>{
             this.props.getUserLocation(userInfo);
 
             }}>

@@ -18,7 +18,6 @@ class Signup extends Component {
   handleNameChange(event){
     const { value } = event.target;
     event.preventDefault();
-    console.log("event.target: ", value)
     this.setState({
         name: value
     });
@@ -27,7 +26,6 @@ class Signup extends Component {
   handleEmailChange(event){
     const { value } = event.target;
     event.preventDefault();
-    console.log("event.target: ", value)
     this.setState({
         email: value
     });
@@ -36,7 +34,6 @@ class Signup extends Component {
   handlePasswordChange(event){
     const { value } = event.target;
     event.preventDefault();
-    console.log("event.target: ", value)
     this.setState({
         password: value
     });
