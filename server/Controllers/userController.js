@@ -1,6 +1,7 @@
+const bcrypt = require('bcrypt');
 const pool = require('../Model/database')
 const userController = {};
-const bcrypt = require('bcrypt')
+
 
 // Controller responsible for adding new users to the database.
 userController.createUser = (req, res, next) => {

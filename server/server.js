@@ -26,13 +26,15 @@ app.use(
   })
 );
 
-app.use("/user", userRouter);
-app.use("/location", locationRouter);
+app.use('/user', userRouter);
+app.use('/location', locationRouter);
 
-app.get("/",  (req, res) => {
-  res.sendFile(path.join(__dirname + "../public/index.html"));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
 
 app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
+
+module.exports = app;
