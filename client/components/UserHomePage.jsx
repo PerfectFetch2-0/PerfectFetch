@@ -72,7 +72,11 @@ class UserHomePage extends Component {
         <div className={'mapContainer'}>
             <div className='googleMap'>
                 <WrappedMapWithMarker 
+<<<<<<< HEAD
                 googleMapURL={'https://maps.googleapis.com/maps/api/js?key=AIzaSyCvMmy5ZGmRRxenD1J7DhZWa9oLGfxuBO4&libraries=geometry,drawing,places'}
+=======
+                googleMapURL={'https://maps.googleapis.com/maps/api/js?key=AIzaSyCdV6Ke1l_kkdTw9QjjpMgXxm45clM5PKM&v=3.exp&libraries=geometry,drawing,places'}
+>>>>>>> dev
                 loadingElement={<div style={ {height: '100%'} }/> }
                 containerElement={<div style={ {height: '100%'} }/> }
                 mapElement={<div style={ {height: '100%'} }/> }
